@@ -16,13 +16,24 @@ app.use(bodyParser.xml());
 app.use(bodyParser.json({ type: "application/*+json" }));
 
 // SAML Things
-app.get("/metadata.xml", serviceProvider.metadata);
-app.get("/login", serviceProvider.login);
-app.post("/assert", serviceProvider.assert);
-app.get("/reflector", serviceProvider.reflector);
-app.get("/logout", serviceProvider.logout);
+app.get("/sp/metadata.xml", serviceProvider.metadata);
+app.get("/sp/login", serviceProvider.login);
+app.post("/sp/assert", serviceProvider.assert);
+app.get("/sp/reflector", serviceProvider.reflector);
+app.get("/sp/refresh", serviceProvider.refresh);
+app.get("/sp/logout", serviceProvider.logout);
 
-app.get("/", (req, res) => res.send("hi!"));
+const someFunction = () =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => resolve("aasdkjashdalbdla"), 1000);
+  });
+
+const handleRoot = async (req, res) => {
+  const returnValue = await someFunction();
+  res.send(returnValue);
+};
+
+app.get("/", handleRoot);
 
 module.exports.app = app;
 module.exports.handler = serverless(app);

@@ -1,20 +1,24 @@
 {
   "extends": [
     "airbnb",
-    "prettier"
+    "prettier",
+    "plugin:flowtype/recommended"
+  ],
+  "plugins": [
+    "flowtype"
   ],
   "globals": {
-    "afterAll",
-    "beforeAll",
-    "beforeEach",
-    "describe",
-    "expect",
-    "fit",
-    "it",
-    "jasmine",
-    "xit",
-    "test",
-    "jest"
+    "afterAll": true,
+    "beforeAll": true,
+    "beforeEach": true,
+    "describe": true,
+    "expect": true,
+    "fit": true,
+    "it": true,
+    "jasmine": true,
+    "xit": true,
+    "test": true,
+    "jest: true"
   }
 }
 

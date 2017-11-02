@@ -1,21 +1,23 @@
-import jwt from "jsonwebtoken";
+// @flow
+import type { $Request, $Response } from "express";
 
-import { User } from "../models";
+import jwt from "../utils/jwt";
+import { User } from "../database/models";
 import { sp, idp } from "../utils/saml";
 import config from "../config";
 
 export default {
-  metadata(req, res) {
+  metadata(req: $Request, res: $Response) {
     res.type("application/xml");
     res.send(sp.create_metadata());
   },
-  login(req, res) {
+  login(req: $Request, res: $Response) {
     sp.create_login_request_url(idp, {}, (err, loginUrl) => {
       if (err !== null) return res.sendStatus(500);
       return res.redirect(loginUrl);
     });
   },
-  assert(req, res) {
+  assert(req: $Request, res: $Response) {
     const options = { request_body: req.body };
     sp.post_assert(idp, options, (err, samlResponse) => {
       if (err !== null) return res.sendStatus(500);
@@ -34,62 +36,51 @@ export default {
         defaults: userAttributes,
       }).spread(user => {
         // Create JWT
-        const token = jwt.sign(
-          {
-            user,
-            session: {
-              name_id: samlResponse.user.name_id,
-              session_index: samlResponse.user.session_index,
-            },
-          },
-          config.jwt.secret,
-        );
+        const token = jwt.sign(user, {
+          name_id: samlResponse.user.name_id,
+          session_index: samlResponse.user.session_index,
+        });
+
+        // Add to cookie
         res.cookie(config.jwt.cookieName, token, {
           httpOnly: true,
           domain: config.jwt.domain,
         });
+
+        // Redirect user
         res.redirect(config.defaultLoginRedirect);
       });
     });
   },
-  reflector(req, res) {
-    jwt.verify(
-      req.cookies[config.jwt.cookieName],
-      config.jwt.secret,
-      {},
-      (err, decoded) => {
-        if (err) {
-          res
-            .status(403)
-            .send("Could not validate your authentication details");
-        }
-        res.send(decoded);
-      },
-    );
+  reflector(req: $Request, res: $Response) {
+    try {
+      const decoded = jwt.verify(req.cookies[config.jwt.cookieName]);
+      res.send(decoded);
+    } catch (e) {
+      res.status(403).send({ message: e.message });
+    }
   },
-  logout(req, res) {
-    jwt.verify(
-      req.cookies[config.jwt.cookieName],
-      config.jwt.secret,
-      {},
-      (err, decoded) => {
-        if (err) {
-          res.redirect(config.defaultLogoutRedirect);
+  refresh(req: $Request, res: $Response) {
+    try {
+      const token = jwt.refresh(req.cookies[config.jwt.cookieName]);
+      res.send({ token });
+    } catch (e) {
+      res.status(400).send({ message: e.message });
+    }
+  },
+  logout(req: $Request, res: $Response) {
+    try {
+      const decoded = jwt.verify(req.cookies[config.jwt.cookieName]);
+      res.cookie(config.jwt.cookieName, "", { expires: new Date() });
+
+      sp.create_logout_request_url(idp, decoded.session, (error, logoutUrl) => {
+        if (error !== null) {
+          return res.redirect(config.defaultLogoutRedirect);
         }
-
-        res.cookie(config.jwt.cookieName, "", { expires: new Date() });
-
-        sp.create_logout_request_url(
-          idp,
-          decoded.session,
-          (error, logoutUrl) => {
-            if (error !== null) {
-              return res.sendStatus(500);
-            }
-            return res.redirect(logoutUrl);
-          },
-        );
-      },
-    );
+        return res.redirect(logoutUrl);
+      });
+    } catch (e) {
+      res.redirect(config.defaultLogoutRedirect);
+    }
   },
 };

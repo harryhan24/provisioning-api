@@ -6,22 +6,15 @@ import config from "../../config";
 
 // Mocked local dependencies
 import { sp, idp } from "../../utils/saml";
-import { User } from "../../models";
+import { User } from "../../database/models";
 
 jest.mock("../../utils/saml");
-jest.mock("../../models");
-
-describe("Test the root path", () => {
-  test("It should response the GET method", () =>
-    request(app)
-      .get("/")
-      .expect(200));
-});
+jest.mock("../../database/models");
 
 describe("The metadata route", () => {
   test("should return the metadata of the SP", () =>
     request(app)
-      .get("/metadata.xml")
+      .get("/sp/metadata.xml")
       .accept("application/xml")
       .expect(200)
       .then(res => {
@@ -36,7 +29,7 @@ describe("Test login route", () => {
     });
 
     return request(app)
-      .get("/login")
+      .get("/sp/login")
       .expect(302)
       .then(response => {
         expect(response.header.location).toContain("login.redirect.com");
@@ -49,7 +42,7 @@ describe("Test login route", () => {
       callback("ERROR", "login.redirect.com");
     });
     return request(app)
-      .get("/login")
+      .get("/sp/login")
       .expect(500);
   });
 });
@@ -63,7 +56,7 @@ describe("Test assertion route", () => {
     });
 
     return request(app)
-      .post("/assert")
+      .post("/sp/assert")
       .expect(500)
       .then(() => {
         expect(sp.post_assert).toHaveBeenCalled();
@@ -73,7 +66,7 @@ describe("Test assertion route", () => {
   test("Should find or create a user on a successful request and return a JWT", () => {
     sp.post_assert = originalPostAssert;
     return request(app)
-      .post("/assert")
+      .post("/sp/assert")
       .expect(302)
       .then(res => {
         expect(res.header["set-cookie"][0]).toContain("TEST_COOKIE_NAME=");
@@ -86,13 +79,13 @@ describe("Test assertion route", () => {
 describe("The reflector route", () => {
   test("should redirect to the logout URL if the JWT is invalid", () =>
     request(app)
-      .get("/reflector")
+      .get("/sp/reflector")
       .expect(403));
 
   test("should show the JWT details if the JWT is valid", () => {
     const jwtCookie = jwt.sign({ username: "bob" }, config.jwt.secret);
     return request(app)
-      .get("/reflector")
+      .get("/sp/reflector")
       .set("Cookie", [`${config.jwt.cookieName}=${jwtCookie}`])
       .expect(200)
       .then(res => {
@@ -104,7 +97,7 @@ describe("The reflector route", () => {
 describe("The logout route", () => {
   test("should redirect the user to the logout route if the JWT is invalid", () =>
     request(app)
-      .get("/logout")
+      .get("/sp/logout")
       .expect(302)
       .then(res => {
         expect(res.header["set-cookie"]).toBeUndefined();
@@ -114,7 +107,7 @@ describe("The logout route", () => {
   test("should redirect the user if given a valid JWT and destroy the cookie", () => {
     const jwtCookie = jwt.sign({ username: "bob" }, config.jwt.secret);
     return request(app)
-      .get("/logout")
+      .get("/sp/logout")
       .set("Cookie", [`${config.jwt.cookieName}=${jwtCookie}`])
       .expect(302)
       .then(res => {
@@ -123,15 +116,39 @@ describe("The logout route", () => {
       });
   });
 
-  test("should add the 500 response if the SP could not create the logout request url", () => {
+  test("should redirect to the default logout URL if the SP could not create the logout request url", () => {
     const jwtCookie = jwt.sign({ username: "bob" }, config.jwt.secret);
     sp.create_logout_request_url = jest.fn((someIdp, data, callback) => {
-      callback("ERROR", "login.redirect.com");
+      callback("ERROR", "should.not.be.used.com");
     });
 
     return request(app)
-      .get("/logout")
+      .get("/sp/logout")
       .set("Cookie", [`${config.jwt.cookieName}=${jwtCookie}`])
-      .expect(500);
+      .expect(302)
+      .then(res => {
+        expect(res.header.location).toContain("logout.redirect.com");
+      });
+  });
+});
+
+describe("The refresh route", () => {
+  test("should return a 400 error if the JWT could not be validated", () =>
+    request(app)
+      .get("/sp/refresh")
+      .expect(400)
+      .then(res => {
+        expect(res.body.message).toBe("jwt must be provided");
+      }));
+
+  test("should successfully refresh the token", () => {
+    const jwtCookie = jwt.sign({ username: "bob" }, config.jwt.secret);
+    request(app)
+      .get("/sp/refresh")
+      .set("Cookie", [`${config.jwt.cookieName}=${jwtCookie}`])
+      .expect(200)
+      .then(res => {
+        expect(res.body.token.length).toBeGreaterThan(10);
+      });
   });
 });
