@@ -67,9 +67,10 @@
   },
   "jest": {
     "collectCoverageFrom": [
-      "!src/config/*", 
+      "!src/config/*",
       "!src/migrations/*",
       "!src/seeders/*",
+      "!src/models/*",
       "src/**/*.{js,jsx}"
     ]
   }

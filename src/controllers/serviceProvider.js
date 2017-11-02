@@ -59,8 +59,9 @@ export default {
       {},
       (err, decoded) => {
         if (err) {
-          res.sendStatus(403);
-          res.send("Could not validate your authentication details");
+          res
+            .status(403)
+            .send("Could not validate your authentication details");
         }
         res.send(decoded);
       },
