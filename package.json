@@ -1,0 +1,61 @@
+{
+  "name": "serverless-starter",
+  "version": "1.0.0",
+  "main": "src/handler.js",
+  "license": "MIT",
+  "scripts": {
+    "deploy": "sls deploy --stage dev",
+    "deploy:production": "sls deploy --stage production",
+    "deploy:stage": "sls deploy --stage stage",
+    "lint": "eslint ./src",
+    "precommit": "lint-staged",
+    "serve": "serverless offline start --port 4000",
+    "tail:hello": "serverless logs --function hello --tail",
+    "test": "jest --watch",
+    "watch:hello":
+      "serverless invoke local --watch --function hello --path fixtures/event.json",
+    "watch:warm":
+      "serverless invoke local --watch --function hello --path fixtures/scheduled.json"
+  },
+  "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-runtime": "^6.22.0",
+    "babel-polyfill": "^6.22.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-0": "^6.22.0",
+    "cross-env": "^5.1.1",
+    "eslint": "^4.8.0",
+    "eslint-config-airbnb": "^16.0.0",
+    "eslint-config-prettier": "^2.2.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0",
+    "husky": "^0.14.3",
+    "jest": "^21.2.1",
+    "lint-staged": "^4.2.3",
+    "serverless": "^1.5.1",
+    "serverless-offline": "^3.16.0",
+    "serverless-webpack": "^3.1.1",
+    "webpack": "^3.6.0",
+    "webpack-node-externals": "^1.5.4"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.22.0",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.2",
+    "jsonwebtoken": "^8.1.0",
+    "mysql2": "^1.4.2",
+    "saml2-js": "^1.12.2",
+    "sequelize": "^4.20.3",
+    "serverless-http": "^1.5.2"
+  },
+  "lint-staged": {
+    "src/**/*.js": [
+      "yarn lint -- --fix",
+      "prettier --write --single-quote --trailing-comma es5",
+      "git add"
+    ]
+  }
+}

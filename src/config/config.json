@@ -1,0 +1,13 @@
+{
+  "development": {
+    "defaultLoginRedirect": "http://dev-itsprov.uq.edu.au:4000/reflector",
+    "defaultLogoutRedirect": "http://dev-itsprov.uq.edu.au:4000/login",
+    "jwt": {
+      "secret": "shhhhhhh",
+      "cookieName": "DEV_ITSPROV_USER",
+      "domain": "dev-itsprov.uq.edu.au"
+    }
+  },
+  "test": {},
+  "production": {}
+}

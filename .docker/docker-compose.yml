@@ -1,0 +1,19 @@
+version: '3'
+services:
+  db:
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=its
+    image: mysql:5.6
+    ports:
+      - "4002:3306"
+  idp:
+    build: ./saml-idp
+    ports:
+      - "4001:80"
+    volumes:
+      - ./saml-idp/config:/var/www/html/config
+      - ./saml-idp/metadata:/var/www/html/metadata
+      - ./saml-idp/cert:/var/www/html/cert
