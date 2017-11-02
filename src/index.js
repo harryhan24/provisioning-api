@@ -19,4 +19,7 @@ app.post("/assert", serviceProvider.assert);
 app.get("/reflector", serviceProvider.reflector);
 app.get("/logout", serviceProvider.logout);
 
+app.get("/", (req, res) => res.send("hi!"));
+
+module.exports.app = app;
 module.exports.handler = serverless(app);

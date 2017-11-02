@@ -12,7 +12,9 @@
     "fit",
     "it",
     "jasmine",
-    "xit"
+    "xit",
+    "test",
+    "jest"
   }
 }
 

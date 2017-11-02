@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 import { User } from "../models";
-import { sp, idp } from "../config/serviceProvider";
+import { sp, idp } from "../utils/saml";
 import config from "../config";
 
 export default {
@@ -11,14 +11,14 @@ export default {
   },
   login(req, res) {
     sp.create_login_request_url(idp, {}, (err, loginUrl) => {
-      if (err !== null) return res.send(500);
+      if (err !== null) return res.sendStatus(500);
       return res.redirect(loginUrl);
     });
   },
   assert(req, res) {
     const options = { request_body: req.body };
     sp.post_assert(idp, options, (err, samlResponse) => {
-      if (err !== null) return res.send(500);
+      if (err !== null) return res.sendStatus(500);
 
       // Get user attributes from SAML response
       const userAttributes = {};
@@ -27,7 +27,7 @@ export default {
       });
 
       // Find or create the user attached to this SAML response
-      return User.findOrCreate({
+      User.findOrCreate({
         where: {
           eduPersonPrincipalName: userAttributes.eduPersonPrincipalName,
         },
