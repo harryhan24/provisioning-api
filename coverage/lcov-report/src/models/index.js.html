@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">87.5% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>7/8</span>
+        <span class='fraction'>0/15</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>1/2</span>
+        <span class='fraction'>0/6</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>1/1</span>
+        <span class='fraction'>0/2</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">87.5% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>7/8</span>
+        <span class='fraction'>0/11</span>
       </div>
     </div>
   </div>
-  <div class='status-line high'></div>
+  <div class='status-line low'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -69,65 +69,65 @@
 24
 25
 26
-27</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+27</td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import Sequelize from "sequelize";
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import Sequelize from "sequeli<span class="cstat-no" title="statement not covered" >ze";<span class="cstat-no" title="statement not covered" ></span></span>
 &nbsp;
-import User from "./user";
-import config from "../config";
+import User <span class="cstat-no" title="statement not covered" >from "./user";<span class="cstat-no" title="statement not covered" ></span></span>
+import config <span class="cstat-no" title="statement not covered" >from "../config";<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
 &nbsp;
-const sequelize = new Sequelize(
+const sequelize <span class="cstat-no" title="statement not covered" >= new Sequelize(</span>
   config.database.database,
   config.database.username,
   config.database.password,
   config.database,
 );
 &nbsp;
-const db = {
+const db <span class="cstat-no" title="statement not covered" >= {</span>
   User: sequelize.import("User", User),
 };
 &nbsp;
-Object.keys(db).forEach(modelName =&gt; {
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (db[modelName].associate) {
+<span class="cstat-no" title="statement not covered" >Object.keys(db).forEach(<span class="fstat-no" title="function not covered" >mo</span>delName =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  if (db[modelName].associate) {</span>
 <span class="cstat-no" title="statement not covered" >    db[modelName].associate(db);</span>
   }
 });
 &nbsp;
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+<span class="cstat-no" title="statement not covered" >db.sequelize = sequelize;</span>
+<span class="cstat-no" title="statement not covered" >db.Sequelize = Sequelize;</span>
 &nbsp;
-module.exports = db;
+<span class="cstat-no" title="statement not covered" >module.exports = db;</span>
 &nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Nov 02 2017 21:55:37 GMT+1000 (E. Australia Standard Time)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Nov 02 2017 22:55:40 GMT+1000 (E. Australia Standard Time)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

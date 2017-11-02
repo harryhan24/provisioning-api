@@ -1,15 +1,18 @@
 // External dependencies
 import express from "express";
 import bodyParser from "body-parser";
+import xmlParser from "body-parser-xml";
 import cookieParser from "cookie-parser";
 import serverless from "serverless-http";
 
 // Controllers
 import { serviceProvider } from "./controllers";
 
+xmlParser(bodyParser);
 const app = express();
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.xml());
 app.use(bodyParser.json({ type: "application/*+json" }));
 
 // SAML Things

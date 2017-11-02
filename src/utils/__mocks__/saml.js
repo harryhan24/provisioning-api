@@ -1,4 +1,7 @@
 export const sp = {
+  create_metadata: jest.fn(() => {
+    "some_metadata!";
+  }),
   post_assert: jest.fn((someIdp, options, callback) => {
     callback(null, {
       user: {
@@ -12,6 +15,9 @@ export const sp = {
         session_index: 123,
       },
     });
+  }),
+  create_logout_request_url: jest.fn((idp, data, callback) => {
+    callback(null, "logout.sso.url");
   }),
 };
 

@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">55.56% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>15/27</span>
+        <span class='fraction'>30/30</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>4/8</span>
+        <span class='fraction'>10/10</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">57.14% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>4/7</span>
+        <span class='fraction'>7/7</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">54.17% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>13/24</span>
+        <span class='fraction'>28/28</span>
       </div>
     </div>
   </div>
-  <div class='status-line medium'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -131,7 +131,13 @@
 86
 87
 88
-89</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+89
+90
+91
+92
+93
+94
+95</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -139,8 +145,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -186,33 +192,39 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -227,8 +239,8 @@ import config from "../config";
 &nbsp;
 export default {
   metadata(req, res) {
-<span class="cstat-no" title="statement not covered" >    res.type("application/xml");</span>
-<span class="cstat-no" title="statement not covered" >    res.send(sp.create_metadata());</span>
+    res.type("application/xml");
+    res.send(sp.create_metadata());
   },
   login(req, res) {
     sp.create_login_request_url(idp, {}, (err, loginUrl) =&gt; {
@@ -274,33 +286,39 @@ export default {
     });
   },
   reflector(req, res) {
-<span class="cstat-no" title="statement not covered" >    jwt.verify(</span>
+    jwt.verify(
       req.cookies[config.jwt.cookieName],
       config.jwt.secret,
       {},
-<span class="fstat-no" title="function not covered" >      (e</span>rr, decoded) =&gt; {
-<span class="cstat-no" title="statement not covered" >        res.send(decoded);</span>
+      (err, decoded) =&gt; {
+        if (err) {
+          res.sendStatus(403);
+          res.send("Could not validate your authentication details");
+        }
+        res.send(decoded);
       },
     );
   },
   logout(req, res) {
-<span class="cstat-no" title="statement not covered" >    jwt.verify(</span>
+    jwt.verify(
       req.cookies[config.jwt.cookieName],
       config.jwt.secret,
       {},
-<span class="fstat-no" title="function not covered" >      (e</span>rr, decoded) =&gt; {
-<span class="cstat-no" title="statement not covered" >        if (err) {</span>
-<span class="cstat-no" title="statement not covered" >          res.redirect(config.defaultLogoutRedirect);</span>
+      (err, decoded) =&gt; {
+        if (err) {
+          res.redirect(config.defaultLogoutRedirect);
         }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        res.cookie(config.jwt.cookieName, "", { expires: new Date() });</span>
+        res.cookie(config.jwt.cookieName, "", { expires: new Date() });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        sp.create_logout_request_url(</span>
+        sp.create_logout_request_url(
           idp,
           decoded.session,
-<span class="fstat-no" title="function not covered" >          (e</span>rror, logoutUrl) =&gt; {
-<span class="cstat-no" title="statement not covered" >            if (err != null) <span class="cstat-no" title="statement not covered" >return res.send(500);</span></span>
-<span class="cstat-no" title="statement not covered" >            return res.redirect(logoutUrl);</span>
+          (error, logoutUrl) =&gt; {
+            if (error !== null) {
+              return res.sendStatus(500);
+            }
+            return res.redirect(logoutUrl);
           },
         );
       },
@@ -313,7 +331,7 @@ export default {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Nov 02 2017 22:05:38 GMT+1000 (E. Australia Standard Time)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Nov 02 2017 22:55:40 GMT+1000 (E. Australia Standard Time)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

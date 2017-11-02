@@ -58,6 +58,10 @@ export default {
       config.jwt.secret,
       {},
       (err, decoded) => {
+        if (err) {
+          res.sendStatus(403);
+          res.send("Could not validate your authentication details");
+        }
         res.send(decoded);
       },
     );
@@ -78,7 +82,9 @@ export default {
           idp,
           decoded.session,
           (error, logoutUrl) => {
-            if (err != null) return res.send(500);
+            if (error !== null) {
+              return res.sendStatus(500);
+            }
             return res.redirect(logoutUrl);
           },
         );

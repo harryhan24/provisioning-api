@@ -49,6 +49,7 @@
   "dependencies": {
     "babel-runtime": "^6.22.0",
     "body-parser": "^1.18.2",
+    "body-parser-xml": "^1.1.0",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
     "jsonwebtoken": "^8.1.0",
@@ -62,6 +63,14 @@
       "yarn lint -- --fix",
       "prettier --write --single-quote --trailing-comma es5",
       "git add"
+    ]
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "!src/config/*", 
+      "!src/migrations/*",
+      "!src/seeders/*",
+      "src/**/*.{js,jsx}"
     ]
   }
 }
