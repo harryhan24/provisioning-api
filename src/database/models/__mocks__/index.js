@@ -5,3 +5,11 @@ export const User = {
     },
   })),
 };
+
+export const ApiUser = {
+  findOrCreate: jest.fn(() => ({
+    spread: callback => {
+      callback({ username: "a", name: "b" });
+    },
+  })),
+};

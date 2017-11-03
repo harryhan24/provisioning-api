@@ -1,15 +1,15 @@
 import request from "supertest";
 import jwt from "jsonwebtoken";
 
-import { app } from "../../index";
-import config from "../../config";
+import { app } from "../../../index";
+import config from "../../../config";
 
 // Mocked local dependencies
-import { sp, idp } from "../../utils/saml";
-import { User } from "../../database/models";
+import { sp, idp } from "../../../utils/saml";
+import { User } from "../../../database/models";
 
-jest.mock("../../utils/saml");
-jest.mock("../../database/models");
+jest.mock("../../../utils/saml");
+jest.mock("../../../database/models");
 
 describe("The metadata route", () => {
   test("should return the metadata of the SP", () =>

@@ -1,10 +1,10 @@
 // @flow
 import type { $Request, $Response } from "express";
 
-import jwt from "../utils/jwt";
-import { User } from "../database/models";
-import { sp, idp } from "../utils/saml";
-import config from "../config";
+import jwt from "../../utils/jwt";
+import { User } from "../../database/models";
+import { sp, idp } from "../../utils/saml";
+import config from "../../config";
 
 export default {
   metadata(req: $Request, res: $Response) {

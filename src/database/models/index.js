@@ -1,7 +1,10 @@
 import Sequelize from "sequelize";
 
-import User from "./user";
 import config from "../../config";
+
+// Models
+import ApiUser from "./apiUser";
+import User from "./user";
 
 const sequelize = new Sequelize(
   config.database.database,
@@ -11,6 +14,7 @@ const sequelize = new Sequelize(
 );
 
 const db = {
+  ApiUser: sequelize.import("ApiUser", ApiUser),
   User: sequelize.import("User", User),
 };
 
