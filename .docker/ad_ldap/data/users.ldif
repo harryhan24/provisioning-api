@@ -1,0 +1,29 @@
+# Basic staff member
+dn: uid=uqstaff,ou=Users,dc=openstack,dc=org
+objectClass: user
+givenname: Bob
+displayname: Bob Staff
+cn: Bob Staff
+sn: Staff
+uid: uqstaff
+userpassword: password
+description: Staff member
+sAMAccountName: uqstaff
+employeeType: staff
+mail: uqstaff@uq.edu.au
+orcid: 123-123-123-123
+
+# Basic student user
+dn: uid=uqstudent,ou=Users,dc=openstack,dc=org
+objectClass: user
+givenname: Bob
+displayname: Bob Student
+cn: Bob Student
+sn: Student
+uid: uqstudent
+userpassword: password
+description: Student member
+sAMAccountName: uqstudent
+employeeType: student
+mail: uqstudent@uq.edu.au
+orcid: abc

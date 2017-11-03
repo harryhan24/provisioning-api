@@ -11,6 +11,7 @@ module.exports = {
     },
   ],
   module: {
+    noParse: [/dtrace-provider$/, /safe-json-stringify$/, /mv/],
     loaders: [
       {
         test: /\.js$/,

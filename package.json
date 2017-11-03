@@ -9,8 +9,10 @@
     "deploy:stage": "sls deploy --stage stage",
     "serve": "serverless offline start --port 4000",
     "test": "jest --watch --coverage",
-    "watch:hello": "serverless invoke local --watch --function hello --path fixtures/event.json",
-    "watch:warm": "serverless invoke local --watch --function hello --path fixtures/scheduled.json"
+    "watch:hello":
+      "serverless invoke local --watch --function hello --path fixtures/event.json",
+    "watch:warm":
+      "serverless invoke local --watch --function hello --path fixtures/scheduled.json"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -53,6 +55,7 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
     "jsonwebtoken": "^8.1.0",
+    "ldapjs": "^1.0.1",
     "mysql2": "^1.4.2",
     "saml2-js": "^1.12.2",
     "sequelize": "^4.20.3",

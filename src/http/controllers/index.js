@@ -1,1 +1,2 @@
-export { default as serviceProvider } from "./serviceProvider";
+export { default as serviceProviderController } from "./serviceProvider";
+export { default as lookupController } from "./lookup";
