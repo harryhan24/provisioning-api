@@ -8,6 +8,6 @@ const adLdapConfig = require("./adLdap.json")[env];
 config.database = databaseConfig;
 config.saml = samlConfig;
 config.ad = adLdapConfig.ad;
-// config.ldap = adLdapConfig.ldap;
+config.ldap = adLdapConfig.ldap;
 
 export default config;

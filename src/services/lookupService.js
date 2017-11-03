@@ -1,5 +1,6 @@
 // @flow
 import Ad from "../clients/Ad";
+import Ldap from "../clients/Ldap";
 import IdpApi from "../clients/IdentityProviderApi";
 
 export default {
@@ -15,6 +16,8 @@ export default {
     adDetails.auEduPersonSharedToken = await idpApi.findAafTokenByUsername(
       accountName,
     );
+
+    adDetails.orcid = await Ldap.getOrcidByUsername(accountName);
 
     // Orcid
     return adDetails;
