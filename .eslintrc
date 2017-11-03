@@ -18,7 +18,8 @@
     "jasmine",
     "xit",
     "test",
-    "jest"
+    "jest",
+    "fetch"
   }
 }
 

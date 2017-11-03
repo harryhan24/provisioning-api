@@ -21,3 +21,9 @@ services:
     build: ./ad_ldap
     ports:
       - "4003:389"
+  jsonapi:
+    image: uqlibrary/docker-node-easymock:1
+    ports:
+      - "4004:3000"
+    volumes:
+      - ./jsonapi:/data

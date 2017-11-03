@@ -1,0 +1,9 @@
+{
+  "UQUsername": "#{searchString}-1",
+  "auEduPersonSharedToken": "#{searchString}-aaf-token",
+  "ORCiD": null,
+  "DisplayName": "#{searchString} 1",
+  "mail": "#{searchString}_1@uq.edu.au",
+  "firstname": "#{searchString}",
+  "surname": "#{searchString}"
+}

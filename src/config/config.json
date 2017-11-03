@@ -6,6 +6,10 @@
       "secret": "shhhhhhh",
       "cookieName": "DEV_ITSPROV_USER",
       "domain": "dev-itsprov.uq.edu.au"
+    },
+    "idpApi": {
+      "baseUri": "http://dev-itsprov.uq.edu.au:4004/idp/",
+      "authToken": "ABC"
     }
   },
   "test": {
@@ -15,6 +19,10 @@
       "secret": "test_secret",
       "cookieName": "TEST_COOKIE_NAME",
       "domain": "test-itsprov.uq.edu.au"
+    },
+    "idpApi": {
+      "baseUri": "http://jsonapi:3000/idp/",
+      "authToken": "ABC"
     }
   },
   "production": {}
