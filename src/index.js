@@ -28,7 +28,7 @@ app.get("/sp/reflector", serviceProviderController.reflector);
 app.get("/sp/refresh", serviceProviderController.refresh);
 app.get("/sp/logout", serviceProviderController.logout);
 
-app.get("/sp/ldap", lookupController.testLdap);
+app.get("/lookups/username/:username", lookupController.username);
 
 app.get("/", (req, res) => {
   res.json({ message: "It worked!", apiUser: res.locals.apiUser });

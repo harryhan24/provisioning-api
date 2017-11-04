@@ -1,23 +1,6 @@
 // @flow
 import ldap from "ldapjs";
-
-const cleanLdapEntry = o => {
-  if (o instanceof Array) return o.map(cleanLdapEntry);
-
-  const attributes = {};
-  Object.entries(o)
-    .filter(([key]) => key !== "controls")
-    .forEach(([key: string, value: string]) => {
-      let parsedValue: any = value;
-      if (value === "true") parsedValue = true;
-      if (value === "false") parsedValue = false;
-      if (/^(-|\+)?\d+$/.test(value)) parsedValue = parseInt(value, 10);
-
-      attributes[key] = parsedValue;
-    });
-
-  return attributes;
-};
+import logger from "./logger";
 
 /**
  * A wrapper around the "ldapjs" object to make it easier to use
@@ -65,25 +48,46 @@ export default class Ldap {
     return new Promise((resolve, reject) => {
       this.client.search(this.baseDn, options, (error, res) => {
         if (error) {
-          reject(`Search failed with message: ${error.message}`);
+          reject(new Error(`Search failed with message: ${error.message}`));
         }
 
-        return res
+        res
           .on("searchEntry", entry =>
-            results.push(cleanLdapEntry(entry.object)),
+            results.push(Ldap.cleanLdapEntry(entry.object)),
           )
-          .on("error", resError => reject(`Search error: ${resError}`))
+          .on("error", resError =>
+            reject(new Error(`Search error: ${resError}`)),
+          )
           .on("end", () => resolve(results));
       });
     });
   }
 
-  async searchFirst(filter: string, attributes: Array<string>) {
+  async searchFirst(filter: string, attributes: Array<string>): Promise<any> {
     try {
       const results = await this.search(filter, attributes);
-      return results[0];
+      return results instanceof Array && results.length > 0 ? results[0] : null;
     } catch (e) {
+      logger.log("error", `[Ldap] Search failed with error: ${e.message}`);
       return null;
     }
   }
+
+  static cleanLdapEntry = o => {
+    if (o instanceof Array) return o.map(Ldap.cleanLdapEntry);
+
+    const attributes = {};
+    Object.entries(o)
+      .filter(([key]) => key !== "controls")
+      .forEach(([key, value]: any) => {
+        let parsedValue: any = value;
+        if (value === "true") parsedValue = true;
+        if (value === "false") parsedValue = false;
+        if (/^(-|\+)?\d+$/.test(value)) parsedValue = parseInt(value, 10);
+
+        attributes[key] = parsedValue;
+      });
+
+    return attributes;
+  };
 }

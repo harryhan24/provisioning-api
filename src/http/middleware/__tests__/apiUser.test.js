@@ -1,6 +1,8 @@
 import apiUserMiddleware from "../apiUser";
 import { ApiUser } from "../../../database/models";
 
+jest.unmock("../apiUser");
+
 class MockResponse {
   hasStatus;
   hasBody;

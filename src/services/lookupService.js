@@ -5,27 +5,24 @@ import IdpApi from "../clients/IdentityProviderApi";
 
 import logger from "../utils/logger";
 
-export default {
-  async byAccountName(accountName: string) {
+export default class LookupService {
+  static async byAccountName(accountName: string) {
     logger.log(
-      "info",
-      `[LookupService::byAccountName] Fetching user details for user "${accountName}"`,
-      { tags: "ad, ldap, idpApi" },
+      "debug",
+      `[LookupService] Fetching user details by account name (${accountName})`,
+      { tags: "lookupService, byAccountName" },
     );
 
-    // Get AD result
     const adDetails = await Ad.searchByUsername(accountName);
     if (adDetails === null) {
       return null;
     }
 
-    // auEduPersonSharedToken
-    adDetails.auEduPersonSharedToken = await IdpApi().findAafTokenByUsername(
+    const auEduPersonSharedToken = await IdpApi.findAafTokenByUsername(
       accountName,
     );
+    const orcid = await Ldap.getOrcidByUsername(accountName);
 
-    // Orcid
-    adDetails.orcid = await Ldap.getOrcidByUsername(accountName);
-    return adDetails;
-  },
-};
+    return { ...adDetails, orcid, auEduPersonSharedToken };
+  }
+}

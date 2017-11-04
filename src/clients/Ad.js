@@ -2,20 +2,18 @@
 import Ldap from "../utils/ldap";
 import config from "../config";
 
-let adClient = null;
-const getAdClient = () => {
-  if (adClient === null) {
-    adClient = new Ldap(
+class AdClient {
+  client: Ldap;
+
+  constructor() {
+    this.client = new Ldap(
       config.ad.url,
       config.ad.base,
       config.ad.dn,
       config.ad.password,
     );
   }
-  return adClient;
-};
 
-export default {
   async searchByUsername(username: string) {
     const attributes = [
       "sAMAccountName",
@@ -24,12 +22,13 @@ export default {
       "givenName",
       "sn",
     ];
-    const filter = `(&(sAMAccountName=${username})(objectClass=user))`;
-    const fields = await getAdClient().searchFirst(filter, attributes);
 
-    return fields !== null ? this.renameFields(fields) : fields;
-  },
-  renameFields(fields: {
+    const filter = `(&(sAMAccountName=${username})(objectClass=user))`;
+    const fields = await this.client.searchFirst(filter, attributes);
+    return fields !== null ? AdClient.renameFields(fields) : fields;
+  }
+
+  static renameFields(fields: {
     sAMAccountName: string,
     givenName: string,
     sn: string,
@@ -43,5 +42,7 @@ export default {
       displayName: fields.displayName,
       mail: fields.mail,
     };
-  },
-};
+  }
+}
+
+export default new AdClient();

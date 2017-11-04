@@ -1,6 +1,8 @@
 import saml2 from "saml2-js";
 import config from "../../config";
 
+jest.unmock("../saml");
+
 jest.mock("saml2-js");
 
 saml2.ServiceProvider = jest.fn(() => {});

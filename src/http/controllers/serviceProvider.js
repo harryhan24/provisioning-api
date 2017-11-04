@@ -6,6 +6,8 @@ import { User } from "../../database/models";
 import { sp, idp } from "../../utils/saml";
 import config from "../../config";
 
+const formatSamlValue = (val: any): string => val[0];
+
 export default {
   metadata(req: $Request, res: $Response) {
     res.type("application/xml");
@@ -24,12 +26,14 @@ export default {
 
       // Get user attributes from SAML response
       const userAttributes = {};
-      Object.entries(samlResponse.user.attributes).forEach(([key, value]) => {
-        [userAttributes[key]] = value;
+      Object.entries(
+        samlResponse.user.attributes,
+      ).forEach(([key: string, value: Array<any>]) => {
+        userAttributes[key] = formatSamlValue(value);
       });
 
       // Find or create the user attached to this SAML response
-      User.findOrCreate({
+      return User.findOrCreate({
         where: {
           eduPersonPrincipalName: userAttributes.eduPersonPrincipalName,
         },
@@ -55,17 +59,17 @@ export default {
   reflector(req: $Request, res: $Response) {
     try {
       const decoded = jwt.verify(req.cookies[config.jwt.cookieName]);
-      res.send(decoded);
+      return res.json(decoded);
     } catch (e) {
-      res.status(403).send({ message: e.message });
+      return res.status(403).send({ statusCode: 403, message: e.message });
     }
   },
   refresh(req: $Request, res: $Response) {
     try {
       const token = jwt.refresh(req.cookies[config.jwt.cookieName]);
-      res.send({ token });
+      res.json({ token });
     } catch (e) {
-      res.status(400).send({ message: e.message });
+      res.status(400).send({ statusCode: 400, message: e.message });
     }
   },
   logout(req: $Request, res: $Response) {
