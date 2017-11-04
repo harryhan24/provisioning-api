@@ -3,8 +3,16 @@ import Ad from "../clients/Ad";
 import Ldap from "../clients/Ldap";
 import IdpApi from "../clients/IdentityProviderApi";
 
+import logger from "../utils/logger";
+
 export default {
   async byAccountName(accountName: string) {
+    logger.log(
+      "info",
+      `[LookupService::byAccountName] Fetching user details for user "${accountName}"`,
+      { tags: "ad, ldap, idpApi" },
+    );
+
     // Get AD result
     const adDetails = await Ad.searchByUsername(accountName);
     if (adDetails === null) {
@@ -12,14 +20,12 @@ export default {
     }
 
     // auEduPersonSharedToken
-    const idpApi = IdpApi();
-    adDetails.auEduPersonSharedToken = await idpApi.findAafTokenByUsername(
+    adDetails.auEduPersonSharedToken = await IdpApi().findAafTokenByUsername(
       accountName,
     );
 
-    adDetails.orcid = await Ldap.getOrcidByUsername(accountName);
-
     // Orcid
+    adDetails.orcid = await Ldap.getOrcidByUsername(accountName);
     return adDetails;
   },
 };

@@ -7,12 +7,8 @@
     "deploy": "sls deploy --stage dev",
     "deploy:production": "sls deploy --stage production",
     "deploy:stage": "sls deploy --stage stage",
-    "serve": "serverless offline start --port 4000",
-    "test": "jest --watch --coverage",
-    "watch:hello":
-      "serverless invoke local --watch --function hello --path fixtures/event.json",
-    "watch:warm":
-      "serverless invoke local --watch --function hello --path fixtures/scheduled.json"
+    "serve": "serverless offline start --port 4000 --dontPrintOutput ",
+    "test": "jest --watch --coverage"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -59,7 +55,9 @@
     "mysql2": "^1.4.2",
     "saml2-js": "^1.12.2",
     "sequelize": "^4.20.3",
-    "serverless-http": "^1.5.2"
+    "serverless-http": "^1.5.2",
+    "winston": "^2.4.0",
+    "winston-aws-cloudwatch": "^1.6.0"
   },
   "jest": {
     "collectCoverageFrom": [

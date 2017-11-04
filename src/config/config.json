@@ -10,6 +10,14 @@
     "idpApi": {
       "baseUri": "http://dev-itsprov.uq.edu.au:4004/idp/",
       "authToken": "ABC"
+    },
+    "log": {
+      "level": "silly",
+      "awsConfig": {
+        "accessKeyId": null,
+        "secretAccessKey": null,
+        "region": "ap-southeast-2"
+      }
     }
   },
   "test": {
@@ -23,6 +31,14 @@
     "idpApi": {
       "baseUri": "http://jsonapi:3000/idp/",
       "authToken": "ABC"
+    },
+    "log": {
+      "level": "silly",
+      "awsConfig": {
+        "accessKeyId": null,
+        "secretAccessKey": null,
+        "region": "ap-southeast-2"
+      }
     }
   },
   "production": {}
