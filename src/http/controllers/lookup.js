@@ -1,9 +1,16 @@
 // @flow
-import type { $Request, $Response } from "express";
+import type { $Request } from "express";
+import type { $Response } from "../../types/express";
 import LookupService from "../../services/LookupService";
+import logger from "../../utils/logger";
 
 export default {
   async username(req: $Request, res: $Response) {
+    logger.log(
+      "debug",
+      `[LookupController] Username lookup request by ${res.locals.apiUser
+        .name} for username: "${req.params.username}"`,
+    );
     const userDetails = await LookupService.byAccountName(req.params.username);
     if (userDetails === null) {
       return res.status(404).json({

@@ -5,6 +5,7 @@ import jwt from "../../utils/jwt";
 import { User } from "../../database/models";
 import { sp, idp } from "../../utils/saml";
 import config from "../../config";
+import logger from "../../utils/logger";
 
 const formatSamlValue = (val: any): string => val[0];
 
@@ -14,6 +15,7 @@ export default {
     res.send(sp.create_metadata());
   },
   login(req: $Request, res: $Response) {
+    logger.log("debug", "[ServiceProvider] Login request received");
     sp.create_login_request_url(idp, {}, (err, loginUrl) => {
       if (err !== null) return res.sendStatus(500);
       return res.redirect(loginUrl);
