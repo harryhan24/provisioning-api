@@ -35,7 +35,7 @@ export default class Ldap {
     return true;
   }
 
-  async search(filter: string, attributes: Array<string>) {
+  async search(filter: string, attributes: Array<string>): Promise<any> {
     await this.bind();
 
     // Setup options

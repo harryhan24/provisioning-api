@@ -25,4 +25,15 @@ export default class LookupService {
 
     return { ...adDetails, orcid, auEduPersonSharedToken };
   }
+
+  static async staffSearch(searchString: string) {
+    logger.log(
+      "debug",
+      `[LookupService] Search staff with string (${searchString})`,
+      { tags: "lookupService, staffSearch" },
+    );
+
+    const result = await Ad.findAccounts(searchString);
+    return result;
+  }
 }

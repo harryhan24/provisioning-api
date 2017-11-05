@@ -21,4 +21,21 @@ export default {
 
     return res.json(userDetails);
   },
+  async staffSearch(req: $Request, res: $Response) {
+    logger.log(
+      "debug",
+      `[LookupController] Staffsearch request by ${res.locals.apiUser
+        .name} for string: "${req.params.searchString}"`,
+    );
+    const { searchString } = req.params;
+    if (searchString === undefined || searchString.trim().length < 3) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "You must provide a search parameter of at least 3 characters",
+      });
+    }
+
+    const result = await LookupService.staffSearch(searchString.trim());
+    return res.json(result);
+  },
 };

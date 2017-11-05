@@ -29,6 +29,7 @@ app.get("/sp/refresh", serviceProviderController.refresh);
 app.get("/sp/logout", serviceProviderController.logout);
 
 app.get("/lookups/username/:username", lookupController.username);
+app.get("/lookups/staff-search/:searchString", lookupController.staffSearch);
 
 app.get("/", (req, res) => {
   res.json({ message: "It worked!", apiUser: res.locals.apiUser });

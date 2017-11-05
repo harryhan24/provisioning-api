@@ -5,4 +5,5 @@ export type $Response = expressResponse & {
   locals: {
     apiUser: { id: number, name: string, description: string },
   },
+  params: any,
 };

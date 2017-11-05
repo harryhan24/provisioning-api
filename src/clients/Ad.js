@@ -2,6 +2,8 @@
 import Ldap from "../utils/ldap";
 import config from "../config";
 
+const attributes = ["sAMAccountName", "mail", "displayName", "givenName", "sn"];
+
 class AdClient {
   client: Ldap;
 
@@ -15,17 +17,15 @@ class AdClient {
   }
 
   async searchByUsername(username: string) {
-    const attributes = [
-      "sAMAccountName",
-      "mail",
-      "displayName",
-      "givenName",
-      "sn",
-    ];
-
     const filter = `(&(sAMAccountName=${username})(objectClass=user))`;
     const fields = await this.client.searchFirst(filter, attributes);
     return fields !== null ? AdClient.renameFields(fields) : fields;
+  }
+
+  async findAccounts(searchToken: string) {
+    const filter = `(&(objectClass=user)(|(sAMAccountName=*${searchToken}*)(mail=*${searchToken}*)))`;
+    const fields = await this.client.search(filter, attributes);
+    return fields !== null ? fields.map(AdClient.renameFields) : fields;
   }
 
   static renameFields(fields: {

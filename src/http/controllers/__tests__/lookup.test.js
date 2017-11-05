@@ -31,3 +31,29 @@ describe("The lookup controller's username route", () => {
       });
   });
 });
+
+describe("The LookupControler -> staffSearch route", () => {
+  test("should return a 400 if the request is invalid", done => {
+    request(app)
+      .get("/lookups/staff-search/uq")
+      .expect(400)
+      .then(res => {
+        expect(res.body.message).toBe(
+          "You must provide a search parameter of at least 3 characters",
+        );
+        done();
+      });
+  });
+
+  test("should work properly as well!", done => {
+    LookupService.staffSearch.mockReturnValueOnce([{ a: "b" }, { c: "d" }]);
+    request(app)
+      .get("/lookups/staff-search/uqstaff")
+      .expect(200)
+      .then(res => {
+        expect(res.body).toEqual([{ a: "b" }, { c: "d" }]);
+        expect(LookupService.staffSearch).toHaveBeenCalledWith("uqstaff");
+        done();
+      });
+  });
+});

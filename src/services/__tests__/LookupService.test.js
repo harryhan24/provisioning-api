@@ -38,3 +38,21 @@ describe("The LookupService->byAccountName", () => {
     });
   });
 });
+
+describe("The LookupService -> staffSearch", () => {
+  test("should emit a debug log when it is called", () => {
+    LookupService.staffSearch("account_name");
+    expect(logger.log).toHaveBeenCalledWith(
+      "debug",
+      `[LookupService] Search staff with string (account_name)`,
+      { tags: "lookupService, staffSearch" },
+    );
+  });
+
+  test("should pass on whatever the Ad client returns", () => {
+    Ad.findAccounts.mockReturnValueOnce({ username: "bob" });
+    expect(LookupService.staffSearch("bob")).resolves.toEqual({
+      username: "bob",
+    });
+  });
+});
