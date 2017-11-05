@@ -7,5 +7,9 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
   });
+
+  User.associate = db => {
+    User.hasMany(db.Project);
+  };
   return User;
 };
