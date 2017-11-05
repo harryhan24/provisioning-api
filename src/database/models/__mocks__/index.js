@@ -13,3 +13,7 @@ export const ApiUser = {
     },
   })),
 };
+
+export const Project = {
+  findOne: jest.fn(),
+};

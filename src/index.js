@@ -7,8 +7,9 @@ import serverless from "serverless-http";
 
 // Controllers
 import {
-  serviceProviderController,
   lookupController,
+  projectController,
+  serviceProviderController,
 } from "./http/controllers";
 import apiUserMiddleware from "./http/middleware/apiUser";
 
@@ -28,8 +29,12 @@ app.get("/sp/reflector", serviceProviderController.reflector);
 app.get("/sp/refresh", serviceProviderController.refresh);
 app.get("/sp/logout", serviceProviderController.logout);
 
+// Lookups
 app.get("/lookups/username/:username", lookupController.username);
 app.get("/lookups/staff-search/:searchString", lookupController.staffSearch);
+
+// Project things
+app.get("/projects/:projectUuid", projectController.getProject);
 
 app.get("/", (req, res) => {
   res.json({ message: "It worked!", apiUser: res.locals.apiUser });

@@ -26,7 +26,7 @@ module.exports = {
         id: 4,
         uuid: "aef4bea2-ddb4-4628-a0be-781a5e08f4fb",
         shortCode: "AAAAAAAD",
-        apiUserId: 1,
+        apiUserId: 2,
         notificationUrl: "http://jsonapi:3000/rdm/notify",
       },
     ]),
