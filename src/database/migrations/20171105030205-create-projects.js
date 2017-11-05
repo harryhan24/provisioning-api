@@ -18,6 +18,7 @@ module.exports = {
       apiUserId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: { model: "api_users", key: "id" },
       },
       hasHumanData: {
         type: Sequelize.BOOLEAN,
