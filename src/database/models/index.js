@@ -3,6 +3,7 @@ import Sequelize from "sequelize";
 import config from "../../config";
 
 // Models
+import Allocation from "./allocation";
 import ApiUser from "./apiUser";
 import User from "./user";
 import Project from "./project";
@@ -15,6 +16,7 @@ const sequelize = new Sequelize(
 );
 
 const db = {
+  Allocation: sequelize.import("Allocation", Allocation),
   ApiUser: sequelize.import("ApiUser", ApiUser),
   User: sequelize.import("User", User),
   Project: sequelize.import("Project", Project),

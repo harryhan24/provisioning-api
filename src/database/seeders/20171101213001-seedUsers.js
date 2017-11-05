@@ -1,6 +1,6 @@
 module.exports = {
   up: queryInterface =>
-    queryInterface.bulkInsert("Users", [
+    queryInterface.bulkInsert("users", [
       {
         name: "Jan-Willem Wisgerhof",
         eduPersonPrincipalName: "uqjwisge@uq.edu.au",
@@ -11,5 +11,5 @@ module.exports = {
       },
     ]),
 
-  down: queryInterface => queryInterface.bulkDelete("Users", null, {}),
+  down: queryInterface => queryInterface.bulkDelete("users", null, {}),
 };

@@ -1,6 +1,6 @@
 module.exports = {
   up: queryInterface =>
-    queryInterface.bulkInsert("ApiUsers", [
+    queryInterface.bulkInsert("api_users", [
       {
         id: 1,
         name: "Test Client API",
@@ -23,5 +23,5 @@ module.exports = {
       },
     ]),
 
-  down: queryInterface => queryInterface.bulkDelete("ApiUsers", null, {}),
+  down: queryInterface => queryInterface.bulkDelete("api_users", null, {}),
 };

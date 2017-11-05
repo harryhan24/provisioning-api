@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable("projects", {
+    queryInterface.createTable("allocations", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,13 +11,39 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      shortCode: {
+      projectId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: { model: "projects", key: "id" },
+      },
+      status: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+        allowNull: false,
+      },
+      provider: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      apiUserId: {
+      externalId: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      groupUuidRo: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      groupGidRo: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
+      },
+      groupUuidRw: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      groupGidRw: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
       },
       hasHumanData: {
         type: Sequelize.BOOLEAN,
@@ -31,10 +57,6 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false,
       },
-      notificationUrl: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -44,5 +66,5 @@ module.exports = {
         type: Sequelize.DATE,
       },
     }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable("projects"),
+  down: (queryInterface, Sequelize) => queryInterface.dropTable("allocations"),
 };

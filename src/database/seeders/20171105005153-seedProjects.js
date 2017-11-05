@@ -1,6 +1,6 @@
 module.exports = {
   up: queryInterface =>
-    queryInterface.bulkInsert("Projects", [
+    queryInterface.bulkInsert("projects", [
       {
         id: 1,
         uuid: "ecf8c2db-ee7b-49b8-85a1-aceae3e93ded",
@@ -39,5 +39,5 @@ module.exports = {
       },
     ]),
 
-  down: queryInterface => queryInterface.bulkDelete("Projects", null, {}),
+  down: queryInterface => queryInterface.bulkDelete("projects", null, {}),
 };
