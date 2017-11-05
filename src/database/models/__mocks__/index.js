@@ -16,4 +16,5 @@ export const ApiUser = {
 
 export const Project = {
   findOne: jest.fn(),
+  findAll: jest.fn(),
 };

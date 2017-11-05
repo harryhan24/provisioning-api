@@ -34,6 +34,7 @@ app.get("/lookups/username/:username", lookupController.username);
 app.get("/lookups/staff-search/:searchString", lookupController.staffSearch);
 
 // Project things
+app.get("/projects", projectController.getProjects);
 app.get("/projects/:projectUuid", projectController.getProject);
 
 app.get("/", (req, res) => {

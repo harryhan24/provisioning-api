@@ -29,4 +29,25 @@ export default {
 
     return res.json(project);
   },
+  async getProjects(req: $Request, res: $Response) {
+    logger.log(
+      "debug",
+      `[ProjectController] Projects GET request by ${res.locals.apiUser.name}`,
+    );
+
+    try {
+      const projects = await ProjectService.getByApiUser(res.locals.apiUser.id);
+      return res.json(projects);
+    } catch (e) {
+      logger.log(
+        "error",
+        `[ProjectController] Projects GET request by Test user failed with error: ${e.message}`,
+      );
+      return res.status(500).json({
+        statusCode: 500,
+        message:
+          "Whoops! Something horrible went wrong. Please try again later.",
+      });
+    }
+  },
 };

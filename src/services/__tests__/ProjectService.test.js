@@ -13,3 +13,12 @@ describe("The ProjectService -> getSingle function", () => {
     expect(result).resolves.toBe("a_project");
   });
 });
+
+describe("The ProjectService -> getByApiUser function", () => {
+  test("should pipe the apiUserId to the where clause", () => {
+    Project.findAll.mockReturnValueOnce("some_return");
+    const p = ProjectService.getByApiUser(1);
+    expect(p).resolves.toBe("some_return");
+    expect(Project.findAll).toHaveBeenCalledWith({ where: { apiUserId: 1 } });
+  });
+});

@@ -7,5 +7,7 @@ jest.mock("./utils/ldap");
 jest.mock("./utils/logger");
 jest.mock("./utils/saml");
 
+jest.mock("./database/models");
+
 // Fetch mock
 global.fetch = require("jest-fetch-mock"); // eslint-disable-line

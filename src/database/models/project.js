@@ -1,6 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
   const Project = sequelize.define("Project", {
-    uuid: DataTypes.STRING,
+    uuid: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+    },
     apiUserId: DataTypes.INTEGER,
     shortCode: DataTypes.STRING,
     hasHumanData: DataTypes.BOOLEAN,

@@ -7,6 +7,8 @@ module.exports = {
         shortCode: "AAAAAAAA",
         apiUserId: 1,
         notificationUrl: "http://jsonapi:3000/rdm/notify",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 2,
@@ -14,6 +16,8 @@ module.exports = {
         shortCode: "AAAAAAAB",
         apiUserId: 1,
         notificationUrl: "http://jsonapi:3000/rdm/notify",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 3,
@@ -21,6 +25,8 @@ module.exports = {
         shortCode: "AAAAAAAC",
         apiUserId: 1,
         notificationUrl: "http://jsonapi:3000/rdm/notify",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 4,
@@ -28,6 +34,8 @@ module.exports = {
         shortCode: "AAAAAAAD",
         apiUserId: 2,
         notificationUrl: "http://jsonapi:3000/rdm/notify",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     ]),
 

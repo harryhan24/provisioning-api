@@ -3,7 +3,6 @@ import request from "supertest";
 import LookupService from "../../../services/LookupService";
 import { app } from "../../../index";
 
-jest.mock("../../middleware/apiUser");
 jest.mock("../../../services/LookupService");
 
 describe("The lookup controller's username route", () => {
