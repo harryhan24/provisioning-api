@@ -1,0 +1,11 @@
+{
+    "development": {
+      "username": "user",
+      "password": "password",
+      "database": "its",
+      "host": "dev-itsprov.uq.edu.au",
+      "port": 4002,
+      "dialect": "mysql"
+    }
+  }
+  

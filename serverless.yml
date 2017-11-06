@@ -9,7 +9,6 @@ custom:
   webpackIncludeModules: true
   serverless-offline-sns:
     port: 4005
-    debug: true
 
 functions:
   app:
@@ -17,12 +16,7 @@ functions:
     events:
       - http: ANY /
       - http: 'ANY {proxy+}'
-  queue:
-    handler: src/queue.test
-    events:
-      - sns: testQueue
 
 plugins:
   - serverless-webpack
   - serverless-offline
-  - serverless-offline-sns

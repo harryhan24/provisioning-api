@@ -27,3 +27,9 @@ services:
       - "4004:3000"
     volumes:
       - ./jsonapi:/data
+  sqs: 
+    image: kraynezero/aws-fake-sqs
+    ports: 
+      - "4006:4568"
+    volumes:
+      - ./sqs:/bootstrap
