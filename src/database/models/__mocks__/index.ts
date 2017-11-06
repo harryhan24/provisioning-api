@@ -16,6 +16,13 @@ export const ApiUser = {
 };
 
 export const Project = {
+  _single: () => Project,
   findOne: jest.fn(),
   findAll: jest.fn(),
+  create: jest.fn(),
+  reload: jest.fn(),
+};
+
+export const Allocation = {
+  create: jest.fn(),
 };

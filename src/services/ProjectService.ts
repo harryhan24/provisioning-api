@@ -35,7 +35,7 @@ export default class ProjectService {
       });
 
       const provider = ProjectService.determineAllocation(project);
-      const allocation = await AllocationService.createAllocation(project, provider);
+      await AllocationService.createAllocation(project, provider);
 
       await project.reload();
 
