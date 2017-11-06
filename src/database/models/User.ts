@@ -1,14 +1,4 @@
-import {
-  Table,
-  Column,
-  AutoIncrement,
-  PrimaryKey,
-  Model,
-  HasMany,
-  IsUUID,
-  CreatedAt,
-  UpdatedAt,
-} from "sequelize-typescript";
+import { Table, Column, AutoIncrement, PrimaryKey, Model, HasMany, IsUUID, CreatedAt, UpdatedAt, DataType } from "sequelize-typescript";
 
 @Table({
   tableName: "users",
@@ -20,7 +10,7 @@ export default class User extends Model<User> {
   id: number;
 
   @IsUUID(4)
-  @Column
+  @Column({ defaultValue: DataType.UUIDV4 })
   uuid: string;
 
   @Column name: string;

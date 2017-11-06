@@ -1,14 +1,4 @@
-import {
-  Table,
-  Column,
-  AutoIncrement,
-  PrimaryKey,
-  Model,
-  HasMany,
-  IsUUID,
-  CreatedAt,
-  UpdatedAt,
-} from "sequelize-typescript";
+import { Table, Column, AutoIncrement, PrimaryKey, Model, HasMany, DataType, IsUUID, CreatedAt, UpdatedAt } from "sequelize-typescript";
 
 import Project from "./Project";
 
@@ -24,7 +14,7 @@ export default class ApiUser extends Model<ApiUser> {
   @Column name: string;
 
   @IsUUID(4)
-  @Column
+  @Column({ defaultValue: DataType.UUIDV4 })
   uuid: string;
 
   @Column description: string;

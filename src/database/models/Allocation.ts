@@ -3,6 +3,7 @@ import {
   Column,
   AutoIncrement,
   PrimaryKey,
+  DataType,
   Model,
   BelongsTo,
   IsUUID,
@@ -17,13 +18,19 @@ import Project from "./Project";
   tableName: "allocations",
 })
 export default class Allocation extends Model<Allocation> {
+  static STATUS_INITIAL = 1;
+  static STATUS_PENDING_STORAGE = 2;
+  static STATUS_STORAGE_PROVIDED = 3;
+  static STATUS_PENDING_SHARED = 4;
+  static STATUS_ACTIVE = 0;
+
   @PrimaryKey
   @AutoIncrement
   @Column
   id: number;
 
   @IsUUID(4)
-  @Column
+  @Column({ defaultValue: DataType.UUIDV4 })
   uuid: string;
 
   @ForeignKey(() => Project)

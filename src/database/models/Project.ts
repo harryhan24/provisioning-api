@@ -9,6 +9,7 @@ import {
   IsUUID,
   CreatedAt,
   UpdatedAt,
+  DataType,
   ForeignKey,
 } from "sequelize-typescript";
 
@@ -25,7 +26,7 @@ export default class Project extends Model<Project> {
   id: number;
 
   @IsUUID(4)
-  @Column
+  @Column({ defaultValue: DataType.UUIDV4 })
   uuid: string;
 
   @ForeignKey(() => ApiUser)
