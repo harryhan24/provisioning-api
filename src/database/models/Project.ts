@@ -11,11 +11,15 @@ import {
   UpdatedAt,
   DataType,
   ForeignKey,
+  DefaultScope,
 } from "sequelize-typescript";
 
 import Allocation from "./Allocation";
 import ApiUser from "./ApiUser";
 
+@DefaultScope({
+  include: [() => Allocation],
+})
 @Table({
   tableName: "projects",
 })
