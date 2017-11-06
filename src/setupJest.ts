@@ -13,4 +13,5 @@ jest.mock("./database/models");
 jest.mock("./database/init");
 
 // Fetch mock
-global.fetch = require("jest-fetch-mock"); // eslint-disable-line
+const globalAll: any = global;
+globalAll.fetch = require("jest-fetch-mock"); // eslint-disable-line

@@ -6,6 +6,7 @@ import * as serverless from "serverless-http";
 
 import apiUserMiddleware from "./http/middleware/apiUserMiddleware";
 import { lookupController, serviceProviderController, projectController } from "./http/controllers";
+import devController from "./http/controllers/devController";
 
 import "./database/init";
 
@@ -14,6 +15,9 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ type: "application/json" }));
 app.use(apiUserMiddleware);
+
+// DEV
+app.get("/dev", devController.dev);
 
 // SAML Things
 app.get("/sp/metadata.xml", serviceProviderController.metadata);

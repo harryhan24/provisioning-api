@@ -1,5 +1,3 @@
-declare var jest, describe, test, expect;
-
 jest.mock("../../utils/ldap");
 
 import Ad from "../Ad"; // eslint-disable-line

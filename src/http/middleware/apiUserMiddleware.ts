@@ -2,7 +2,7 @@ import { ApiUser } from "../../database/models";
 
 // Middleware for api auth
 export default async (req, res, next: () => void) => {
-  if (req.originalUrl.startsWith("/sp/")) {
+  if (req.originalUrl.startsWith("/sp/") || req.originalUrl.startsWith("/dev")) {
     next();
   } else {
     // Check if we have received an authorization header
