@@ -5,15 +5,16 @@ import logger from "./logger";
  * A wrapper around the "ldapjs" object to make it easier to use
  */
 export default class Ldap {
-  client: any;
+  client: ldap.Client;
   bound: boolean;
 
+  url: string;
   baseDn: string;
   user: string;
   password: string;
 
   constructor(url: string, baseDn: string, user: string, password: string) {
-    this.client = ldap.createClient({ url });
+    this.url = url;
     this.bound = false;
 
     this.baseDn = baseDn;
@@ -24,6 +25,7 @@ export default class Ldap {
   async bind() {
     if (!this.bound) {
       await new Promise(resolve => {
+        this.client = ldap.createClient({ url: this.url });
         this.client.bind(this.user, this.password, () => {
           resolve();
           this.bound = true;

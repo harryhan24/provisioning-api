@@ -1,4 +1,4 @@
-declare var jest, describe, test, expect;
+import "jest";
 
 import * as libLdap from "ldapjs";
 import Ldap from "../ldap";
@@ -24,10 +24,6 @@ describe("The Ldap -> constructor", () => {
     expect(l.baseDn).toBe("baseDn");
     expect(l.user).toBe("user");
     expect(l.password).toBe("password");
-
-    expect(libLdap.createClient).toHaveBeenCalledWith({
-      url: "www.google.com",
-    });
   });
 });
 
@@ -56,6 +52,7 @@ describe("The Ldap -> search function", () => {
   test("should handle errors", () => {
     const l = new Ldap("www.google.com", "baseDn", "user", "password");
     l.bind = jest.fn();
+    l.client = libLdap.client;
     libLdap.client.search.mockImplementationOnce((baseDn, options, callback) => {
       callback(new Error("some_error"), null);
     });
@@ -66,6 +63,7 @@ describe("The Ldap -> search function", () => {
   test("should handle a late error", () => {
     const l = new Ldap("www.google.com", "baseDn", "user", "password");
     l.bind = jest.fn();
+    l.client = libLdap.client;
 
     // Create an ldap response object.. it's obnoxious. Only answer  the error call.
     const res = {
@@ -86,6 +84,9 @@ describe("The Ldap -> search function", () => {
 
   test("should handle a successful search", () => {
     const l = new Ldap("www.google.com", "baseDn", "user", "password");
+    l.client = {
+      search: jest.fn(),
+    };
     l.bind = jest.fn();
 
     // Create an ldap response object.. it's obnoxious.
