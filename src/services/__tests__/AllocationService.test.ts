@@ -1,13 +1,46 @@
-declare var jest, describe, test, expect;
+import "jest";
 
-import { Allocation, Project } from "../../database/models";
+import logger from "../../utils/logger";
 import AllocationService from "../AllocationService";
 
-describe("The AllocationService -> createAllocation function", () => {
-  test("should create an allocation with the given parameters", () => {
-    const project = { id: 1, hasHumanData: false, hasHumanIdentifiableData: false, hasHpcRequirement: true };
-    Allocation.create.mockReturnValue(project);
+jest.mock("../QueueService");
 
-    expect(AllocationService.createAllocation(project, "dummy")).resolves.toEqual(project);
+const { Allocation, Project } = require.requireMock("../../database/models");
+const qs = require.requireMock("../QueueService");
+const QueueService = qs.default;
+const TYPE_ALLOCATION_CREATED = qs.TYPE_ALLOCATION_CREATED;
+
+describe("The AllocationService -> createAllocation function", () => {
+  test("should create an allocation with the given parameters", done => {
+    const project = { id: 1, hasHumanData: false, hasHumanIdentifiableData: false, hasHpcRequirement: true };
+    Allocation.create.mockReturnValueOnce({ id: 123 });
+    QueueService.sendMessage.mockReturnValueOnce(true);
+
+    AllocationService.createAllocation(project, "dummy").then(response => {
+      expect(response).toEqual({ id: 123 });
+      expect(QueueService.sendMessage).toHaveBeenCalledWith(TYPE_ALLOCATION_CREATED, { id: 123 });
+      done();
+    });
+  });
+
+  test("should handle an error from the QueueService", done => {
+    const project = { id: 1, hasHumanData: false, hasHumanIdentifiableData: false, hasHpcRequirement: true };
+    const error = new Error("OOOOoooooooOOOOoooOooooo");
+    Allocation.create.mockReturnValueOnce({ id: 123 });
+    QueueService.sendMessage.mockImplementationOnce(() => {
+      throw error;
+    });
+
+    AllocationService.createAllocation(project, "dummy").then(response => {
+      expect(response).toEqual({ id: 123 });
+      expect(QueueService.sendMessage).toHaveBeenCalled();
+      expect(
+        logger.error,
+      ).toHaveBeenCalledWith(
+        "[AllocationService] Could not create QUEUE message for new allocation. Allocation will have to be manually picked up.",
+        { error },
+      );
+      done();
+    });
   });
 });

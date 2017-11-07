@@ -19,6 +19,13 @@ export default {
         region: "ap-southeast-2",
       },
     },
+    aws: {
+      region: "ap-southeast-2",
+      sqs: {
+        endpoint: "http://localhost:4006",
+        queueUrl: "http://localhost:4006/default",
+      },
+    },
   },
   test: {
     defaultLoginRedirect: "login.redirect.com",
@@ -38,6 +45,13 @@ export default {
         accessKeyId: null,
         secretAccessKey: null,
         region: "ap-southeast-2",
+      },
+    },
+    aws: {
+      region: "ap-southeast-2",
+      sqs: {
+        endpoint: "http://localhost:4006",
+        queueUrl: "http://localhost:4006/default",
       },
     },
   },
