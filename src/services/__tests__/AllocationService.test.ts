@@ -2,14 +2,13 @@ import "jest";
 
 import logger from "../../utils/logger";
 import AllocationService from "../AllocationService";
+import { JOB_TYPE_NEW_ALLOCATION } from "../../jobs/types";
 
 jest.mock("../QueueService");
 
 const { Allocation, Project } = require.requireMock("../../database/models");
 
-const qs = require.requireMock("../QueueService");
-const QueueService = qs.default;
-const TYPE_ALLOCATION_CREATED = qs.TYPE_ALLOCATION_CREATED;
+const QueueService = require.requireMock("../QueueService").default;
 
 describe("The AllocationService -> createAllocation function", () => {
   test("should create an allocation with the given parameters", done => {
@@ -19,7 +18,7 @@ describe("The AllocationService -> createAllocation function", () => {
 
     AllocationService.createAllocation(project, "dummy").then(response => {
       expect(response).toEqual({ id: 123 });
-      expect(QueueService.sendMessage).toHaveBeenCalledWith(TYPE_ALLOCATION_CREATED, { id: 123 });
+      expect(QueueService.sendMessage).toHaveBeenCalledWith(JOB_TYPE_NEW_ALLOCATION, { id: 123 });
       done();
     });
   });
