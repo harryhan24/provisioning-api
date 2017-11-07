@@ -28,6 +28,7 @@
     "sequelize-typescript": "^0.5.0",
     "serverless": "^1.5.1",
     "serverless-offline": "^3.16.0",
+    "serverless-offline-scheduler": "jwwisgerhof/serverless-offline-scheduler",
     "serverless-webpack": "^4.0.0",
     "sqlite3": "^3.1.13",
     "superagent": "^3.8.0",
@@ -46,6 +47,7 @@
     "jsonwebtoken": "^8.1.0",
     "ldapjs": "^1.0.1",
     "mysql2": "^1.4.2",
+    "node-schedule": "^1.2.5",
     "saml2-js": "^1.12.2",
     "sequelize": "^4.20.3",
     "serverless-http": "^1.5.2",
@@ -70,8 +72,10 @@
       "!src/config/*",
       "!src/database/**/*",
       "!src/index.ts",
+      "!src/queue.ts",
       "!src/utils/logger.ts",
-      "!src/http/controllers/devController.ts"
+      "!src/http/controllers/devController.ts",
+      "!src/**/*Interface.ts"
     ],
     "setupFiles": [
       "./src/setupJest.ts"

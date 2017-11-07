@@ -50,8 +50,8 @@ export default {
     aws: {
       region: "ap-southeast-2",
       sqs: {
-        endpoint: "http://localhost:4006",
-        queueUrl: "http://localhost:4006/default",
+        endpoint: "",
+        queueUrl: "",
       },
     },
   },

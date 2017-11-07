@@ -7,8 +7,6 @@ provider:
   profile: default
 custom:
   webpackIncludeModules: true
-  serverless-offline-sns:
-    port: 4005
 
 functions:
   app:
@@ -16,7 +14,12 @@ functions:
     events:
       - http: ANY /
       - http: 'ANY {proxy+}'
+  queue:
+    handler: src/queue.handler
+    events:
+      - schedule: rate(1 minute)
 
 plugins:
   - serverless-webpack
   - serverless-offline
+  - serverless-offline-scheduler

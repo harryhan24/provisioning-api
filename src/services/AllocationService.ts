@@ -1,7 +1,9 @@
 // @flow
 import { Allocation, Project } from "../database/models";
 import logger from "../utils/logger";
-import QueueService, { TYPE_ALLOCATION_CREATED } from "./QueueService";
+import QueueService from "./QueueService";
+
+import { JOB_TYPE_NEW_ALLOCATION } from "../jobs/types";
 
 export default class AllocationService {
   static async createAllocation(project: Project, provider: string) {
@@ -15,7 +17,7 @@ export default class AllocationService {
     });
 
     try {
-      await QueueService.sendMessage(TYPE_ALLOCATION_CREATED, { id: allocation.id });
+      await QueueService.sendMessage(JOB_TYPE_NEW_ALLOCATION, { id: allocation.id });
     } catch (error) {
       logger.error(
         "[AllocationService] Could not create QUEUE message for new allocation. Allocation will have to be manually picked up.",

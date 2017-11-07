@@ -6,6 +6,7 @@ import AllocationService from "../AllocationService";
 jest.mock("../QueueService");
 
 const { Allocation, Project } = require.requireMock("../../database/models");
+
 const qs = require.requireMock("../QueueService");
 const QueueService = qs.default;
 const TYPE_ALLOCATION_CREATED = qs.TYPE_ALLOCATION_CREATED;
