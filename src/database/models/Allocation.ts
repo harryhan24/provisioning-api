@@ -37,7 +37,7 @@ export default class Allocation extends Model<Allocation> {
   @Column
   projectId: number;
 
-  @Column status: string;
+  @Column status: number;
   @Column provider: string;
   @Column externalId: string;
   @Column groupUuidRo: string;

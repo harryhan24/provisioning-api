@@ -69,7 +69,7 @@ describe("The QueueService -> receiveMessages function", () => {
     });
 
     QueueService.receiveMessages().catch(result => {
-      expect(logger.error).toHaveBeenCalledWith("Could not receive messages from the queue: some_error", {
+      expect(logger.error).toHaveBeenCalledWith("[QueueService] Could not receive messages from the queue: some_error", {
         error: { message: "some_error" },
       });
       expect(result).toBe(false);
@@ -120,16 +120,11 @@ describe("The QueueService -> actionMessage function", () => {
     const message = {};
 
     const dm = QueueService.deleteMessage;
-    QueueService.deleteMessage = jest.fn();
     QueueService.actionMessage(message).then(response => {
       expect(response).toBe(false);
-      expect(JobFactory.getJobInstance).toHaveBeenCalledWith(undefined);
-      expect(logger.error).toHaveBeenCalledWith(`[QueueService] Received action with invalid type... deleting message from queue`, {
-        error,
+      expect(logger.error).toHaveBeenCalledWith(`[QueueService] Could not action message: no ReceiptHandle`, {
         message,
       });
-      expect(QueueService.deleteMessage).toHaveBeenCalled();
-      QueueService.deleteMessage = dm;
       done();
     });
   });
@@ -141,11 +136,11 @@ describe("The QueueService -> actionMessage function", () => {
 
     const dm = QueueService.deleteMessage;
     QueueService.deleteMessage = jest.fn();
-    QueueService.actionMessage({ Body: JSON.stringify({ type: "a", data: "b" }) }).then(res => {
-      expect(job.process).toHaveBeenCalledWith("b");
+    QueueService.actionMessage({ ReceiptHandle: "a", Body: JSON.stringify({ type: "a", data: "b" }) }).then(res => {
+      expect(job.process).toHaveBeenCalledWith("a", "b");
       expect(QueueService.deleteMessage).not.toHaveBeenCalled();
       QueueService.deleteMessage = dm;
-      expect(res).toBe(false);
+      expect(res).toBe(true);
       done();
     });
   });
@@ -155,50 +150,58 @@ describe("The QueueService -> actionMessage function", () => {
     JobFactory.getJobInstance.mockReturnValueOnce(job);
     job.process.mockReturnValueOnce(true);
 
-    const dm = QueueService.deleteMessage;
-    QueueService.deleteMessage = jest.fn();
-    QueueService.actionMessage({ Body: JSON.stringify({ type: "a", data: "b" }) }).then(res => {
-      expect(job.process).toHaveBeenCalledWith("b");
-      expect(QueueService.deleteMessage).toHaveBeenCalled();
-      QueueService.deleteMessage = dm;
+    QueueService.actionMessage({ ReceiptHandle: "abc", Body: JSON.stringify({ type: "a", data: "b" }) }).then(res => {
+      expect(job.process).toHaveBeenCalledWith("abc", "b");
       expect(res).toBe(true);
+      done();
+    });
+  });
+
+  test("should handle an exception from the JobFactory", done => {
+    const error = new Error("some_error");
+    JobFactory.getJobInstance.mockImplementationOnce(() => {
+      throw error;
+    });
+
+    const message = { ReceiptHandle: "abc", Body: JSON.stringify({ type: "a", data: "b" }) };
+    QueueService.actionMessage(message).then(res => {
+      expect(logger.error).toHaveBeenCalledWith(`[QueueService] Could not action message... deleting message from queue`, {
+        error,
+        message,
+      });
+      expect(res).toBe(false);
       done();
     });
   });
 });
 
 describe("The QueueService -> deleteMessage function", () => {
-  test("should handle a malformed message and roll with it", done => {
-    QueueService.deleteMessage({}).then(res => {
-      expect(res).toBe(true);
-      expect(QueueService.sqs.deleteMessage).not.toHaveBeenCalled();
-      done();
-    });
-  });
-
   test("should handle an SQS error when deleting a message", done => {
-    const message = { ReceiptHandle: "abc" };
+    const receiptHandle = "abc";
     const error = new Error("some_error");
     QueueService.sqs.deleteMessage.mockImplementationOnce(({ QueueUrl, ReceiptHandle }, cb) => {
       expect(QueueUrl).toBe(config.aws.sqs.queueUrl);
-      expect(ReceiptHandle).toBe(message.ReceiptHandle);
+      expect(ReceiptHandle).toBe(receiptHandle);
       cb(error, null);
     });
 
-    QueueService.deleteMessage(message).then(res => {
+    QueueService.deleteMessage(receiptHandle).then(res => {
       expect(res).toBe(false);
-      expect(logger.error).toBeCalledWith(`[QueueService] Could not delete message from queue`, { message, error });
+      expect(logger.error).toBeCalledWith(`[QueueService] Could not delete message from queue`, {
+        error: error.message,
+        receiptHandle,
+      });
       done();
     });
   });
 
   test("should handle a success", () => {
-    const message = { ReceiptHandle: "abc" };
+    const receiptHandle = "abc";
     const error = new Error("some_error");
     QueueService.sqs.deleteMessage.mockImplementationOnce(({ QueueUrl, ReceiptHandle }, cb) => {
       cb(null, "all good!");
     });
 
-    expect(QueueService.deleteMessage(message)).resolves.toBe(true);
+    expect(QueueService.deleteMessage(receiptHandle)).resolves.toBe(true);
   });
 });

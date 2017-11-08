@@ -1,13 +1,11 @@
 // @flow
 import { Allocation, Project } from "../database/models";
 import logger from "../utils/logger";
-import QueueService from "./QueueService";
-
-import { JOB_TYPE_NEW_ALLOCATION } from "../jobs/types";
+import StorageProviderFactory from "../StorageProviders/StorageProviderFactory";
 
 export default class AllocationService {
   static async createAllocation(project: Project, provider: string) {
-    const allocation = await Allocation.create({
+    const allocation = await Allocation.create<Allocation>({
       projectId: project.id,
       status: Allocation.STATUS_INITIAL,
       provider,
@@ -16,14 +14,8 @@ export default class AllocationService {
       hasHpcRequirement: project.hasHpcRequirement,
     });
 
-    try {
-      await QueueService.sendMessage(JOB_TYPE_NEW_ALLOCATION, { id: allocation.id });
-    } catch (error) {
-      logger.error(
-        "[AllocationService] Could not create QUEUE message for new allocation. Allocation will have to be manually picked up.",
-        { error },
-      );
-    }
+    const storageProvider = StorageProviderFactory.getStorageProviderInstance(provider);
+    await storageProvider.queueCreationJob(allocation);
 
     return allocation;
   }

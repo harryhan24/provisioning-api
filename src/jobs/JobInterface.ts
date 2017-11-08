@@ -1,3 +1,3 @@
 export default interface JobInterface {
-  process(data: object): Promise<boolean>;
+  process(receiptHandle: string, data: any): Promise<boolean>;
 };

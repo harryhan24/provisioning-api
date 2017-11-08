@@ -33,10 +33,11 @@ class Queue {
     return new Promise((resolve, reject) => {
       this.sqs.receiveMessage({ MaxNumberOfMessages: 5, QueueUrl: this.queueUrl, VisibilityTimeout: 60 }, async (error, data) => {
         if (error) {
-          logger.error(`Could not receive messages from the queue: ${error.message}`, { error });
+          logger.error(`[QueueService] Could not receive messages from the queue: ${error.message}`, { error });
           return reject(false);
         }
 
+        logger.silly(`[QueueService] Processing SQS messages`, { data });
         if (data.Messages) {
           await data.Messages.forEach(async (message: SQS.Message) => {
             return await this.actionMessage(message);
@@ -49,36 +50,32 @@ class Queue {
 
   async actionMessage(message: SQS.Message): Promise<boolean> {
     const body = JSON.parse(message.Body || "{}");
+    if (!message.ReceiptHandle) {
+      logger.error(`[QueueService] Could not action message: no ReceiptHandle`, { message });
+      return false;
+    }
 
     try {
       const job = JobFactory.getJobInstance(body.type);
-      const response = await job.process(body.data);
-
-      if (response) {
-        await this.deleteMessage(message);
-      }
-
-      return response;
+      await job.process(message.ReceiptHandle, body.data);
+      return true;
     } catch (error) {
-      logger.error(`[QueueService] Received action with invalid type... deleting message from queue`, { error, message });
-      await this.deleteMessage(message);
+      logger.error(`[QueueService] Could not action message... deleting message from queue`, { error, message });
+      this.deleteMessage(message.ReceiptHandle);
       return false;
     }
   }
 
-  async deleteMessage(message: SQS.Message): Promise<any> {
+  async deleteMessage(receiptHandle: string): Promise<any> {
+    logger.debug(`[QueueService] Deleting queue message with receipt handle: ${receiptHandle}`);
     return new Promise((resolve, reject) => {
-      if (message.ReceiptHandle) {
-        this.sqs.deleteMessage({ QueueUrl: this.queueUrl, ReceiptHandle: message.ReceiptHandle }, (error, data) => {
-          if (error) {
-            logger.error(`[QueueService] Could not delete message from queue`, { message, error });
-            return resolve(false);
-          }
-          return resolve(true);
-        });
-      } else {
+      this.sqs.deleteMessage({ QueueUrl: this.queueUrl, ReceiptHandle: receiptHandle }, (error, data) => {
+        if (error) {
+          logger.error(`[QueueService] Could not delete message from queue`, { receiptHandle, error: error.message });
+          return resolve(false);
+        }
         return resolve(true);
-      }
+      });
     });
   }
 }
